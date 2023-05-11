@@ -3,10 +3,11 @@ const express = require("express");
 const router = express.Router();
 const CyclicDB = require("@cyclic.sh/dynamodb");
 const httpStatus = require("http-status");
+const validate = require("../middlewares/validate");
 const ApiError = require("../utils/ApiError");
-const db = CyclicDB(process.env.CYCLIC_DB);
+const { createParticipant } = require("../validations/participantValidation");
 let participants = CyclicDB.collection("participants");
-console.log(process.env.AWS_ACCESS_KEY_ID);
+const moment = require("moment");
 
 router.get("/", async (req, res, next) => {
   try {
@@ -84,19 +85,21 @@ router.get("/deleted", async (req, res, next) => {
   }
 });
 
-router.post("/add", async (req, res, next) => {
+router.post("/add", validate(createParticipant), async (req, res, next) => {
   try {
     const {
       email,
       firstName,
       lastName,
       active,
+      dob,
       companyName,
       salary,
       currency,
       country,
       city,
     } = req.body;
+    const formattedDOB = moment(dob).format("YYYY/MM/DD");
     const isEmailTaken = await participants.item(email).get();
     if (isEmailTaken) {
       return res.status(httpStatus.BAD_REQUEST).jsend.error({
@@ -107,6 +110,7 @@ router.post("/add", async (req, res, next) => {
       firstName,
       lastName,
       active,
+      dob: formattedDOB,
     });
     const work = await participants.item(email).fragment("work").set({
       companyName,
@@ -128,7 +132,7 @@ router.post("/add", async (req, res, next) => {
   }
 });
 
-router.put("/:email", async (req, res, next) => {
+router.put("/:email", validate(createParticipant), async (req, res, next) => {
   try {
     const {
       firstName,
@@ -139,8 +143,10 @@ router.put("/:email", async (req, res, next) => {
       currency,
       country,
       city,
+      dob,
     } = req.body;
-
+    console.log(typeof dob);
+    const formattedDOB = moment(dob).format("YYYY/MM/DD");
     const { email } = req.params;
     const newEmail = req.body.email;
 
@@ -166,6 +172,7 @@ router.put("/:email", async (req, res, next) => {
         firstName,
         lastName,
         active,
+        dob : formattedDOB,
       });
       const work = await participants.item(newEmail).fragment("work").set({
         companyName,
@@ -193,6 +200,7 @@ router.put("/:email", async (req, res, next) => {
       firstName,
       lastName,
       active,
+      dob: formattedDOB,
     });
     const work = await participants.item(email).fragment("work").set({
       companyName,
@@ -210,7 +218,7 @@ router.put("/:email", async (req, res, next) => {
       home: home.props,
     });
   } catch (err) {
-    throw new ApiError(httpStatus.BAD_REQUEST, err.message);
+    next(new ApiError(httpStatus.BAD_REQUEST, err.message));
   }
 });
 
