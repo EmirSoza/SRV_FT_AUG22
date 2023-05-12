@@ -1,5 +1,5 @@
 {
-  "name": "starter-rest-api",
+  "name": "server-assignment",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,8 +8,8 @@
     "repl": "env-cmd node"
   },
   "keywords": [],
-  "author": "Kam Lasater <kam.lasater@cyclic.sh>",
-  "license": "ISC",
+  "author": "Emirhan Sozan",
+  "license": "MIT",
   "devDependencies": {
     "nodemon": "^2.0.16"
   },

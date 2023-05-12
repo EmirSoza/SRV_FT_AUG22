@@ -6,7 +6,7 @@ const ApiError = require("./utils/ApiError");
 const jsend = require("jsend");
 require("dotenv").config();
 // Load routes from routes folder
-const participantRoute = require("./routes/participants");
+const participantRoute = require("./routes/participants.route");
 
 const app = express();
 
@@ -19,19 +19,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(jsend.middleware);
 
-// #############################################################################
-// This configures static hosting for files in /public that have the extensions
-// listed in the array.
-// var options = {
-//   dotfiles: 'ignore',
-//   etag: false,
-//   extensions: ['htm', 'html','css','js','ico','jpg','jpeg','png','svg'],
-//   index: ['index.html'],
-//   maxAge: '1m',
-//   redirect: false
-// }
-// app.use(express.static('public', options))
-// #############################################################################
 
 app.use("/participants", participantRoute);
 

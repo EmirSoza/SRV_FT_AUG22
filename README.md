@@ -1,34 +1,11 @@
-# Starter REST Api
+## CYCLIC URL
 
-This is an example REST Api designed to be deployed on Cyclic.sh
+https://good-gray-lizard-hose.cyclic.app
 
-[![Deploy to Cyclic](https://deploy.cyclic.app/button.svg)](https://deploy.cyclic.app/)
+## ENV
 
-
-## Examples
-
-### Create/Update - Insert/Upsert
-
-```shell
-curl -i https://localhost:3000/animals/rin%20tin%20tin \
-    --data '{"breed":"German Shepard", "gender": "male"}' \
-    -XPOST -H 'Content-Type: application/json'
-```
-
-### Read All - List
-
-```shell
-curl -i https://localhost:3000/animals
-```
-
-### Read
-
-```shell
-curl -i https://localhost:3000/animals/lassy
-```
-
-### Delete
-
-```shell
-curl -i -XDELETE https://localhost:3000/animals/lassy
-```
+CYCLIC_DB=
+AWS_REGION=
+AWS_ACCESS_KEY_ID=
+AWS_SECRET_ACCESS_KEY=
+AWS_SESSION_TOKEN=
